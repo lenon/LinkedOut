@@ -1,7 +1,11 @@
 # LinkedOut
 
 LinkedIn has become unbearable, so I wrote this script to mass unfollow all
-connections there. Feel free to use it as you like.
+connections there. The script is written in Ruby using Capybara and Selenium
+Webdriver, so it opens up a browser window (Chrome) to take actions through the
+UI the same way you would, but much faster.
+
+Feel free to use it as you like.
 
 ## Requirements
 
