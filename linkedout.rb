@@ -32,25 +32,47 @@ module LinkedOut
     password = $stdin.noecho(&:gets)
     puts
 
+    [email, password]
+  end
+
+  def ask_for_mfa
     print 'Enter 2FA code: '
     mfa_code = $stdin.noecho(&:gets)
     puts
 
-    [email, password, mfa_code]
+    mfa_code
   end
 
-  def sign_in(credentials)
-    email, password, mfa_code = credentials
+  def mfa_push?
+    page.has_content?('Open your LinkedIn app and tap Yes to confirm your sign-in')
+  end
+
+  def mfa_auth_app?
+    page.has_content?('Enter the code you see on your authenticator app')
+  end
+
+  def sign_in
+    email, password = ask_for_credentials
 
     visit 'https://www.linkedin.com/login/'
 
     fill_in 'Email', with: email
     fill_in 'Password', with: password
-    fill_in 'Please enter the code here', with: mfa_code
+    click_button 'Sign in'
 
-    # linkedin submits the form automatically after filling login details so
-    # here we assert we are actually logged in
-    page.assert_selector(:button, 'Start a post')
+    if mfa_push?
+      puts 'Tap "Yes" on the app to confirm the sign-in attempt'
+    elsif mfa_auth_app?
+      mfa_code = ask_for_mfa
+
+      fill_in 'Please enter the code here', with: mfa_code
+      click_button 'Submit'
+    end
+
+    until page.has_button?('Start a post')
+      puts 'Waiting...'
+      sleep 1
+    end
   end
 
   def rand_sleep
@@ -78,7 +100,7 @@ module LinkedOut
 
   def unfollow_everyone!
     config_capybara
-    sign_in(ask_for_credentials)
+    sign_in
 
     visit 'https://www.linkedin.com/feed/following/'
 
