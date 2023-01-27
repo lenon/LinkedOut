@@ -3,5 +3,5 @@
 source 'https://rubygems.org'
 
 gem 'capybara'
+gem 'cuprite'
 gem 'rubocop'
-gem 'selenium-webdriver'

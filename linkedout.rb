@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'capybara/cuprite'
 require 'capybara/dsl'
 require 'io/console'
 
@@ -9,8 +10,12 @@ module LinkedOut
   extend Capybara::DSL
 
   def config_capybara
+    Capybara.register_driver(:cuprite) do |app|
+      Capybara::Cuprite::Driver.new(app, { headless: false })
+    end
+
     Capybara.configure do |c|
-      c.default_driver = :selenium_chrome
+      c.default_driver = :cuprite
       # do not try to start a rack app
       c.run_server = false
       # some inputs are not identified by <label> elements, only aria attributes

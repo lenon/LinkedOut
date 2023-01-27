@@ -10,7 +10,7 @@ Feel free to use it as you like.
 ## Requirements
 
 * Ruby. You can install it with [rbenv/ruby-build][ruby-build].
-* Google Chrome and [chromedriver][chromedriver].
+* Google Chrome.
 
 ## Installation
 
@@ -43,4 +43,3 @@ bundle exec ruby linkedout.rb
 Fill in your credentials and the script will start unfollowing everyone.
 
 [ruby-build]: https://github.com/rbenv/ruby-build#readme
-[chromedriver]: https://chromedriver.chromium.org/downloads
