@@ -11,7 +11,12 @@ module LinkedOut
 
   def config_capybara
     Capybara.register_driver(:cuprite) do |app|
-      Capybara::Cuprite::Driver.new(app, { headless: false })
+      Capybara::Cuprite::Driver.new(app, {
+                                      headless: false,
+                                      browser_options: {
+                                        'disable-blink-features' => 'AutomationControlled'
+                                      }
+                                    })
     end
 
     Capybara.configure do |c|
